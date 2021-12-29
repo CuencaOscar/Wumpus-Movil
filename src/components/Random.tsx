@@ -3,8 +3,6 @@ import React from 'react'
 const Random = () => {
 
     let posiciones: number[] = []
-
-    console.log('Se llamo al arreglo de posiciones')
     
     while(posiciones.length < 17){
 

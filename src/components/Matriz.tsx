@@ -2,21 +2,19 @@ import React from 'react'
 
 export const Matriz = () => {
 
-    let filas = 8;
-    
-    let columnas = 15;
+  let filas = 8;
 
-    let tablero: number[] = []
+  let columnas = 15;
 
-    console.log("Se llamo a la matriz")
+  let tablero: number[] = []
 
-    for (let i = 0; i < filas * columnas; i++) {
-        tablero.push(i)
-    }
+  for (let i = 0; i < filas * columnas; i++) {
+    tablero.push(i)
+  }
 
-    return {
-        tablero,
-    }
+  return {
+    tablero,
+  }
 }
 
 export default Matriz;

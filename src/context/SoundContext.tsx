@@ -1,22 +1,19 @@
-import { createContext } from "react";
-import Sound from 'react-native-sound'
+import { createContext } from "react"; //Libreria para crear el context
+import Sound from 'react-native-sound' //Libreria para el sonido
 import React from 'react'
 
-//Asi va a lucir mi context
+//Asi va a lucir mi context (Datos globales -> Sonidos y efectos para el juego)
 export interface SoundState {
-    portada: Sound,
-    seleccion: Sound,
-    jugando: Sound,
-    muerte: Sound,
-    moneda: Sound,
-    victoria: Sound,
-    prueba: string,
-    movimiento: Sound,
-    reproducir: (name:Sound) => void
+    portada: Sound, //Inicio de la aplicacion
+    seleccion: Sound, //Seleccion de personaje
+    jugando: Sound, //Sonido mientras se juega
+    muerte: Sound, //Perder
+    moneda: Sound, //Captura de moneda
+    victoria: Sound, //Ganar
+    movimiento: Sound, //Pasos
 }
 
-//Estado inicial
-
+//Estado inicial (Creo las instancias)
 export const soundInitialState: SoundState = {
     portada: new Sound('portada.mp3'),
     seleccion: new Sound('seleccion.mp3'),
@@ -24,9 +21,7 @@ export const soundInitialState: SoundState = {
     muerte: new Sound('muerte.mp3'),
     moneda: new Sound('moneda.mp3'),
     victoria: new Sound('victoria.mp3'),
-    prueba: 'Confirma',
     movimiento: new Sound('movimiento.mp3'),
-    reproducir: (name) => {name.play()}
 }
 
 //Definir todo lo que compartire con mis hijos y como luce

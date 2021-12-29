@@ -24,8 +24,6 @@ const GameScreen = ({ route, navigation }: Props) => {
 
   hideNavigationBar();
 
-  const StatusBarHeight = StatusBar.currentHeight
-
   const [tablero, setTablero] = useState<number[]>([])
 
   const [arreglo, setArreglo] = useState<number[]>([])
@@ -105,7 +103,7 @@ const GameScreen = ({ route, navigation }: Props) => {
         setModal2(false)
         setModal(false)
         soundState.jugando.play()
-      }, 4700);
+      }, 4900);
     }
   }, [coins])
 
@@ -118,7 +116,7 @@ const GameScreen = ({ route, navigation }: Props) => {
   //Funcion para cuando presionemos la tecla derecha
   const TurnRight = () => {
     soundState.movimiento.stop()
-    if (!valorFilasDerecha.includes(jugador)) {
+    if (!valorFilasDerecha.includes(jugador) && !modal) {
       setJugador(jugador + 1)
       setJ(j + 1)
       setScore(score - 10)
@@ -141,7 +139,7 @@ const GameScreen = ({ route, navigation }: Props) => {
   //Funcion para cuando presionemos la tecla izquierda
   const TurnLeft = () => {
     soundState.movimiento.stop()
-    if (!valorFilasIzquierda.includes(jugador)) {
+    if (!valorFilasIzquierda.includes(jugador) && !modal) {
       setJugador(jugador - 1)
       setJ(j - 1)
       setScore(score - 10)
@@ -162,7 +160,7 @@ const GameScreen = ({ route, navigation }: Props) => {
   //Funcion para cuando presionemos la tecla abajo
   const TurnDown = () => {
     soundState.movimiento.stop()
-    if (!valorColumnasInferior.includes(jugador)) {
+    if (!valorColumnasInferior.includes(jugador) && !modal) {
       setJugador(jugador + 15)
       setI(i + 1)
       setScore(score - 10)
@@ -182,7 +180,7 @@ const GameScreen = ({ route, navigation }: Props) => {
 
   const TurnUp = () => {
     soundState.movimiento.stop()
-    if (!valorColumnasSuperior.includes(jugador)) {
+    if (!valorColumnasSuperior.includes(jugador) && !modal) {
       setJugador(jugador - 15)
       setI(i - 1)
       setScore(score - 10)
@@ -230,13 +228,12 @@ const GameScreen = ({ route, navigation }: Props) => {
           resizeMode: 'contain',
           marginTop: 20
         }} />
-        {console.log('Entro')}
       </View>
     );
   }
 
   return (
-    <View style={styles.container}>
+    <View style={{ ...styles.center, ...styles.container }}>
       {isLoading && Activity()}
       <View>
         <Puntaje score={score} atack={atack} coins={coins} params={params} />
@@ -251,29 +248,29 @@ const GameScreen = ({ route, navigation }: Props) => {
           j={j}
           params={params} />
       </View>
-      <View style={{ height: height, justifyContent: 'center', alignItems: 'center' }}>
+      <View style={{ height: height, ...styles.center }}>
         <JugadorPlay params={params} />
         <Control TurnUp={TurnUp} TurnLeft={TurnLeft} TurnDown={TurnDown} TurnRight={TurnRight} params={params} />
       </View>
       <Modal
         transparent={true}
-        visible={modal} //Lose
+        visible={modal}//modal
         animationType='slide'
         statusBarTranslucent
       >
-        <View style={{ backgroundColor: '#000000aa', justifyContent: 'center', alignItems: 'center', flex: 1 }}>
-          <View style={{ opacity: 0.7, width: 300, height: height * 0.9, borderRadius: 10, justifyContent: 'center', alignItems: 'center' }}>
+        <View style={{ backgroundColor: '#000000aa', ...styles.center, flex: 1 }}>
+          <View style={{ width: width * 0.4, height: height * 0.9, borderRadius: 10, ...styles.center }}>
             <Image style={{ height: height * 0.5, resizeMode: 'contain' }} source={personajes[params].LoseImage} />
-            <Text style={{ fontSize: 50, color: 'white' }}>Game Over {console.log('Game Over')}</Text>
+            <Text style={{ fontSize: 50, color: 'white' }}>Game Over </Text>
             <View style={{flexDirection: 'row'}}>
               <TouchableOpacity onPress={() => { setModal(false), setBandera(bandera + 1), soundState.muerte.stop(), soundState.jugando.play() }}>
-                <View style={{ backgroundColor: 'green', width: width * 0.15, borderRadius: 15, alignItems: 'center', marginHorizontal: 10 }}>
-                  <Text style={{ fontSize: 25, color: 'white' }}>Retry</Text>
+                <View style={{ backgroundColor: 'green', width: width * 0.15, ...styles.center, ...styles.buttonModal}}>
+                  <Text style={ styles.textLose }>Retry</Text>
                 </View>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => { setModal(false), setBandera(bandera + 1), soundState.muerte.stop(), navigation.navigate('PortadaScreen') }}>
-                <View style={{ backgroundColor: 'red', width: width * 0.15, borderRadius: 15, alignItems: 'center', marginHorizontal: 10 }}>
-                  <Text style={{ fontSize: 25, color: 'white' }}>Quit</Text>
+              <TouchableOpacity onPress={() => { setModal(false), setBandera(bandera + 1), soundState.muerte.stop(), soundState.jugando.stop(), navigation.navigate('PortadaScreen') }}>
+                <View style={{ backgroundColor: 'red', width: width * 0.15, ...styles.center, ...styles.buttonModal }}>
+                  <Text style={ styles.textLose }>Quit</Text>
                 </View>
               </TouchableOpacity>
             </View>
@@ -281,15 +278,14 @@ const GameScreen = ({ route, navigation }: Props) => {
         </View>
       </Modal>
       <Modal
-        // transparent={true}
-        visible={modal2} //Next Level
+        visible={modal2}
         animationType='slide'
         statusBarTranslucent
       >
-        <View style={{ backgroundColor: 'black', justifyContent: 'center', alignItems: 'center', flex: 1 }}>
-          <View style={{ opacity: 0.7, width: 300, height: height * 0.9, borderRadius: 10, justifyContent: 'center', alignItems: 'center' }}>
+        <View style={{ backgroundColor: 'black', ...styles.center, flex: 1 }}>
+          <View style={{ width: width * 0.4, height: height * 0.9, borderRadius: 10, ...styles.center }}>
             <Image style={{ height: height * 0.5, resizeMode: 'contain' }} source={personajes[params].winImage} />
-            <Text style={{ fontSize: 35, color: 'white' }}>Level {console.log('Game Over Win')} {level}</Text>
+            <Text style={{ fontSize: 35, color: 'white' }}>Level  {level}</Text>
             <Text style={{ fontSize: 20, color: 'white' }}>Score: {score}</Text>
           </View>
         </View>
@@ -298,17 +294,27 @@ const GameScreen = ({ route, navigation }: Props) => {
 }
 
 const styles = StyleSheet.create({
+  center: {
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   container: {
     flex: 1,
     backgroundColor: '#222222',
     flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center'
   },
   imagenChica: {
     height: 50,
     width: 50,
     resizeMode: 'contain' //Sirve para no ajustar la imagen al espacio requerido 
+  },
+  textLose: {
+    fontSize: 25, 
+    color: 'white'
+  },
+  buttonModal: {
+    borderRadius: 15, 
+    marginHorizontal: 10
   }
 })
 
