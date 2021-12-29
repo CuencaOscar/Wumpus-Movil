@@ -11,8 +11,6 @@ interface Props extends StackScreenProps<any, any> { }
 
 const PortadaScreen = ({ navigation }: Props) => {
 
-  // const musica = new Sound('seleccion.mp3')
-
   const { soundState} = useContext(SoundContext)
 
   const { width, height } = useWindowDimensions()
@@ -22,7 +20,7 @@ const PortadaScreen = ({ navigation }: Props) => {
   console.log(soundState.portada.setNumberOfLoops(-1), soundState.portada.setVolume(0.05), soundState.portada.play())
 
   return (
-    <View style={{ flex: 1, backgroundColor: 'green' }}>
+    <View style={{ flex: 1 }}>
       <ImageBackground
         resizeMode='cover'
         style={{
@@ -40,22 +38,22 @@ const PortadaScreen = ({ navigation }: Props) => {
             <View>
               <TouchableOpacity>
                 <View style={{ backgroundColor: 'black', borderRadius: 20, paddingHorizontal: 20, marginVertical: 10 }}>
-                  <Text style={{ fontSize: 20 }}>High Scores</Text>
+                  <Text style={{ fontSize: 20, color: 'white' }}>High Scores</Text>
                 </View>
               </TouchableOpacity>
               <TouchableOpacity>
                 <View style={{ backgroundColor: 'black', borderRadius: 20, paddingHorizontal: 20, marginVertical: 10, alignItems:'center' }}>
-                  <Text style={{ fontSize: 20 }}>Music</Text>
+                  <Text style={{ fontSize: 20, color: 'white' }}>Music</Text>
                 </View>
               </TouchableOpacity>
               <TouchableOpacity>
                 <View style={{ backgroundColor: 'black', borderRadius: 20, paddingHorizontal: 20, marginVertical: 10 }}>
-                  <Text style={{ fontSize: 20 }}>Instructions</Text>
+                  <Text style={{ fontSize: 20, color: 'white' }}>Instructions</Text>
                 </View>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => {navigation.navigate('PersonajesScreen'), soundState.portada.stop(),  soundState.seleccion.setNumberOfLoops(-1), soundState.seleccion.setVolume(0.05), soundState.seleccion.play()}} style={{ backgroundColor: 'black', borderRadius: 20, alignItems: 'center', marginVertical: 10 }}>
                 <View>
-                  <Text style={{ fontSize: 20 }}>Play</Text>
+                  <Text style={{ fontSize: 20, color: 'white' }}>Play</Text>
                 </View>
               </TouchableOpacity>
             </View>

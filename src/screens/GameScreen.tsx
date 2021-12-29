@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { ActivityIndicator, Button, Image, Modal, StatusBar, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native';
+import { ActivityIndicator, Image, Modal, StatusBar, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native';
 import Matriz from '../components/Matriz';
 import Random from '../components/Random';
 import {
@@ -11,19 +11,16 @@ import Control from '../components/Control';
 import JugadorPlay from '../components/JugadorPlay';
 import personajes from '../data/personajes';
 import { StackScreenProps } from '@react-navigation/stack';
-import Sound from 'react-native-sound'
 import SoundContext from '../context/SoundContext';
 
 interface Props extends StackScreenProps<any, any> { }
 
 
-const GameScreen = ({ route }: Props) => {
+const GameScreen = ({ route, navigation }: Props) => {
 
   const params = route.params!.id
 
-  const { soundState} = useContext(SoundContext)
-
-  // console.log(params)
+  const { soundState } = useContext(SoundContext)
 
   hideNavigationBar();
 
@@ -79,12 +76,12 @@ const GameScreen = ({ route }: Props) => {
     setScore(0)
     setModal(false)
     setBandera2(0)
-    if (bandera === 0){
+    if (bandera === 0) {
       setTimeout(() => {
         setIsLoading(false)
       }, 4000);
     }
-    if (bandera !== 0){
+    if (bandera !== 0) {
       setTimeout(() => {
         setIsLoading(false)
       }, 4000);
@@ -227,7 +224,6 @@ const GameScreen = ({ route }: Props) => {
     return (
       <View style={{ backgroundColor: 'black', position: 'absolute', zIndex: 6, width: '100%', height: '100%', justifyContent: 'flex-end', alignItems: 'center' }}>
         <ActivityIndicator color={'white'} size={50} />
-        {/* <Text style={{fontSize:25, color:'white'}}>Loading Stage</Text> */}
         <Image source={require('./../../images/Loading.png')} style={{
           width: width * 0.45,
           height: '50%',
@@ -269,16 +265,18 @@ const GameScreen = ({ route }: Props) => {
           <View style={{ opacity: 0.7, width: 300, height: height * 0.9, borderRadius: 10, justifyContent: 'center', alignItems: 'center' }}>
             <Image style={{ height: height * 0.5, resizeMode: 'contain' }} source={personajes[params].LoseImage} />
             <Text style={{ fontSize: 50, color: 'white' }}>Game Over {console.log('Game Over')}</Text>
-            <TouchableOpacity onPress={() => { setModal(false), setBandera(bandera + 1), soundState.muerte.stop(), soundState.jugando.play() }}>
-              <View style={{ flexDirection: 'row' }}>
+            <View style={{flexDirection: 'row'}}>
+              <TouchableOpacity onPress={() => { setModal(false), setBandera(bandera + 1), soundState.muerte.stop(), soundState.jugando.play() }}>
                 <View style={{ backgroundColor: 'green', width: width * 0.15, borderRadius: 15, alignItems: 'center', marginHorizontal: 10 }}>
                   <Text style={{ fontSize: 25, color: 'white' }}>Retry</Text>
                 </View>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => { setModal(false), setBandera(bandera + 1), soundState.muerte.stop(), navigation.navigate('PortadaScreen') }}>
                 <View style={{ backgroundColor: 'red', width: width * 0.15, borderRadius: 15, alignItems: 'center', marginHorizontal: 10 }}>
                   <Text style={{ fontSize: 25, color: 'white' }}>Quit</Text>
                 </View>
-              </View>
-            </TouchableOpacity>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </Modal>
