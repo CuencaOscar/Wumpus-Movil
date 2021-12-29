@@ -21,7 +21,13 @@ const PortadaScreen = ({ navigation }: Props) => {
         }}
         source={require('./../../images/MarioPortada.jpg')}
       >
-        <CardPortada navigation={() => navigation.navigate('PersonajesScreen')}/>
+        <CardPortada
+          navigationPlay={
+            () => navigation.navigate('PersonajesScreen')
+          }
+          navigationScores={
+            () => navigation.navigate('HighScoresScreen')
+          } />
       </ImageBackground>
     </View >
   )

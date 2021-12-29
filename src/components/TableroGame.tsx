@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React  from 'react'
 import { Image, StyleSheet, Text, View } from 'react-native';
 import personajes from '../data/personajes';
 

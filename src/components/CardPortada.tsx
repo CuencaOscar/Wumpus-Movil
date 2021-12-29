@@ -4,10 +4,11 @@ import SoundContext from '../context/SoundContext';
 import ButtonPortada from './ButtonPortada';
 
 interface Props {
-  navigation: any
+  navigationPlay: any,
+  navigationScores: any
 }
 
-const CardPortada = ({ navigation }: Props) => {
+const CardPortada = ({ navigationPlay, navigationScores }: Props) => {
 
   const { width, height } = useWindowDimensions()
 
@@ -17,7 +18,7 @@ const CardPortada = ({ navigation }: Props) => {
 
   let cardheight: number = height * 0.85
 
-  console.log(soundState.portada.setNumberOfLoops(-1), soundState.portada.setVolume(0.05), soundState.portada.play())
+  // console.log(soundState.portada.setNumberOfLoops(-1), soundState.portada.setVolume(0.05), soundState.portada.play())
 
   return (
     <View style={styles.containerFirst}>
@@ -28,10 +29,10 @@ const CardPortada = ({ navigation }: Props) => {
           <Text style={styles.title}>Grid</Text>
         </View>
         <View style={{ ...styles.center, height: '65%', width: '100%' }}>
-          <ButtonPortada text={"High Scores"} />
+          <ButtonPortada text={"High Scores"} onPress={navigationScores}/>
           <ButtonPortada text={"Music"} onPress={() => { (!soundState.portada.isPlaying()) ? soundState.portada.play() : (soundState.jugando.stop(), soundState.portada.stop())}}/>
           <ButtonPortada text={"Instructions"} />
-          <ButtonPortada text={"Play"} onPress={navigation} />
+          <ButtonPortada text={"Play"} onPress={navigationPlay} />
         </View>
         {/* <View>
               <TouchableOpacity>

@@ -4,6 +4,7 @@ import GameScreen from '../screens/GameScreen';
 import PersonajesScreen from '../screens/PersonajesScreen';
 import PortadaScreen from '../screens/PortadaScreen';
 import { SafeAreaView, StatusBar } from 'react-native';
+import HighScoresScreen from '../screens/HighScoresScreen';
 
 const Stack = createStackNavigator();
 
@@ -19,6 +20,7 @@ const StackNavigator = () => {
         <Stack.Screen name="PortadaScreen" component={PortadaScreen} />
         <Stack.Screen name="PersonajesScreen" component={PersonajesScreen} />
         <Stack.Screen name="GameScreen" component={GameScreen} />
+        <Stack.Screen name='HighScoresScreen' component={HighScoresScreen}/>
       </Stack.Navigator>
     </SafeAreaView>
   );
