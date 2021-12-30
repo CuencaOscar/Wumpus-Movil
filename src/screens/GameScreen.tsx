@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { ActivityIndicator, Image, Modal, StatusBar, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native';
+import { ActivityIndicator, Image, Modal, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, useWindowDimensions, View } from 'react-native';
 import Matriz from '../components/Matriz';
 import Random from '../components/Random';
 import {
@@ -12,11 +12,17 @@ import JugadorPlay from '../components/JugadorPlay';
 import personajes from '../data/personajes';
 import { StackScreenProps } from '@react-navigation/stack';
 import SoundContext from '../context/SoundContext';
+import firestore from '@react-native-firebase/firestore';
 
 interface Props extends StackScreenProps<any, any> { }
 
 
 const GameScreen = ({ route, navigation }: Props) => {
+
+  const [state, setState] = useState({
+    highscore: 0,
+    name: ''
+  })
 
   const params = route.params!.id
 
@@ -218,6 +224,19 @@ const GameScreen = ({ route, navigation }: Props) => {
     ScoreValue()
   }
 
+  const handleChangeText = (name:any, value: any) => {
+    setState({...state, [name]: value, highscore:score})
+  }
+
+  const saveNewRecord = () => {
+    if (state.name === ''){
+      console.log('Escribe tu nombre vg')
+    }
+    else {
+      navigation.navigate('PortadaScreen')
+    }
+  }
+
   const Activity = () => {
     return (
       <View style={{ backgroundColor: 'black', position: 'absolute', zIndex: 6, width: '100%', height: '100%', justifyContent: 'flex-end', alignItems: 'center' }}>
@@ -262,18 +281,34 @@ const GameScreen = ({ route, navigation }: Props) => {
           <View style={{ width: width * 0.4, height: height * 0.9, borderRadius: 10, ...styles.center }}>
             <Image style={{ height: height * 0.5, resizeMode: 'contain' }} source={personajes[params].LoseImage} />
             <Text style={{ fontSize: 50, color: 'white' }}>Game Over </Text>
-            <View style={{flexDirection: 'row'}}>
+            <View style={{ flexDirection: 'row' }}>
               <TouchableOpacity onPress={() => { setModal(false), setBandera(bandera + 1), soundState.muerte.stop(), soundState.jugando.play() }}>
-                <View style={{ backgroundColor: 'green', width: width * 0.15, ...styles.center, ...styles.buttonModal}}>
-                  <Text style={ styles.textLose }>Retry</Text>
+                <View style={{ backgroundColor: 'green', width: width * 0.15, ...styles.center, ...styles.buttonModal }}>
+                  <Text style={styles.textLose}>Retry</Text>
                 </View>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => { setModal(false), setBandera(bandera + 1), soundState.muerte.stop(), soundState.jugando.stop(), navigation.navigate('PortadaScreen') }}>
                 <View style={{ backgroundColor: 'red', width: width * 0.15, ...styles.center, ...styles.buttonModal }}>
-                  <Text style={ styles.textLose }>Quit</Text>
+                  <Text style={styles.textLose}>Quit</Text>
                 </View>
               </TouchableOpacity>
             </View>
+          </View>
+        </View>
+      </Modal>
+      <Modal transparent={true} statusBarTranslucent visible={modal}>
+        <View style={{ justifyContent: 'center', flex: 1, alignItems: 'center', backgroundColor: '#000000aa' }}>
+          <View style={{ position: 'absolute', width: width * 0.5, height: height * 0.4, overflow: 'hidden', alignItems: 'center', justifyContent: 'center', borderBottomWidth: height * 0 }}>
+            <View style={{ width: width * 0.40, height: height * 0.8, backgroundColor: 'green', transform: [{ rotate: '37.5deg' }], position: 'absolute' }} />
+            <View style={{ width: width * 0.40, height: height * 0.8, backgroundColor: 'green', transform: [{ rotate: '-37.5deg' }], position: 'absolute' }} />
+            <Text style={{color: 'white', fontWeight: 'bold'}}>HIGH SCORE</Text>
+            <TextInput style={styles.input} placeholder='ENTER YOUR NAME' onChangeText={(value) => {handleChangeText('name', value)}} />
+            <TouchableOpacity onPress={() => { saveNewRecord() }}>
+              <View style={{width:width*0.1, height: height*0.09, backgroundColor:'transparent', justifyContent: 'center', alignItems: 'center', overflow: 'hidden'}}>
+                <View style={{ width: width * 0.2, height: height * 0.15, backgroundColor: 'black', transform: [{ rotate: '-37.5deg' }], position: 'absolute'}} />
+                <Text style={{color: 'white', fontWeight: 'bold'}}>Yes</Text>
+              </View>
+            </TouchableOpacity>
           </View>
         </View>
       </Modal>
@@ -309,12 +344,19 @@ const styles = StyleSheet.create({
     resizeMode: 'contain' //Sirve para no ajustar la imagen al espacio requerido 
   },
   textLose: {
-    fontSize: 25, 
+    fontSize: 25,
     color: 'white'
   },
   buttonModal: {
-    borderRadius: 15, 
+    borderRadius: 15,
     marginHorizontal: 10
+  },
+  input: {
+    height: '25%',
+    width: '80%',
+    margin: 12,
+    borderWidth: 1,
+    padding: 10
   }
 })
 
