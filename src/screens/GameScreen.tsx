@@ -174,6 +174,7 @@ const GameScreen = ({ route, navigation }: Props) => {
     }
     if (arreglo.slice(12, 17).includes(jugador - 1)) {
       soundState.movimiento.stop()
+      soundState.moneda.setVolume(0.05)
       soundState.moneda.play()
     }
   }
@@ -195,6 +196,7 @@ const GameScreen = ({ route, navigation }: Props) => {
     }
     if (arreglo.slice(12, 17).includes(jugador + 15)) {
       soundState.movimiento.stop()
+      soundState.moneda.setVolume(0.05)
       soundState.moneda.play()
     }
   }
@@ -215,6 +217,7 @@ const GameScreen = ({ route, navigation }: Props) => {
     }
     if (arreglo.slice(12, 17).includes(jugador - 15)) {
       soundState.movimiento.stop()
+      soundState.moneda.setVolume(0.05)
       soundState.moneda.play()
     }
   }
@@ -230,7 +233,7 @@ const GameScreen = ({ route, navigation }: Props) => {
       let posicion = arreglo.indexOf(jugador)
       setBandera2(bandera2 + 1)
       setBandera3(bandera3 + 1)
-      setLevel(1)
+      // setLevel(1)
       setModal(true)
     }
   }
@@ -259,6 +262,7 @@ const GameScreen = ({ route, navigation }: Props) => {
         .then(() => {
           console.log('Score added!');
         });
+        setLevel(1)
         setScore(0)
     }
   }

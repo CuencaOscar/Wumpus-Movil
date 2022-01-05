@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { FlatList, Image, Text, useWindowDimensions, View } from 'react-native';
-import scores from '../data/scores';
-import { PropsScores } from '../data/scores';
 import firestore from '@react-native-firebase/firestore';
 
 const HighScoresScreen = () => {
@@ -52,7 +50,7 @@ const HighScoresScreen = () => {
         <View style={{ alignItems: 'center', width: '25%' }}>
           <Text style={{ fontSize: 30 }}>{item.data().level}</Text>
         </View>
-        <View style={{ alignItems: 'center', width: '25%' }}>
+        <View style={{ alignItems: 'flex-end', width: '25%' }}>
             <Text style={{ fontSize: 30 }}>{item.data().score}</Text>
         </View>
         <View style={{ alignItems: 'center', width: '25%' }}>
