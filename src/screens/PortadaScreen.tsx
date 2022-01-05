@@ -1,5 +1,5 @@
 import { StackScreenProps } from '@react-navigation/stack';
-import React, { useContext } from 'react'
+import React from 'react'
 import { ImageBackground, View } from 'react-native';
 import {
   hideNavigationBar,

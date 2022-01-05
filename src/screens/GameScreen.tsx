@@ -44,6 +44,8 @@ const GameScreen = ({ route, navigation }: Props) => {
 
   const [j, setJ] = useState<number>(0)
 
+  const [m, setM] = useState<number>(0)
+
   let valorFilasIzquierda = [0, 15, 30, 45, 60, 75, 90, 105]
 
   let valorFilasDerecha = [14, 29, 44, 59, 74, 89, 104, 119]
@@ -112,6 +114,19 @@ const GameScreen = ({ route, navigation }: Props) => {
       }, 4900);
     }
   }, [coins])
+
+  const loadData = async () => {
+    try {
+      const highscores = await firestore().collection('highscores').orderBy('score', 'desc').limit(10).get();
+      setM(highscores.docs[9].data().score)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    loadData()
+  }, [])
 
   const { width, height } = useWindowDimensions()
 
@@ -233,7 +248,18 @@ const GameScreen = ({ route, navigation }: Props) => {
       console.log('Escribe tu nombre vg')
     }
     else {
-      navigation.navigate('PortadaScreen')
+      // navigation.navigate('PortadaScreen')
+      firestore()
+        .collection('highscores')
+        .add({
+          name: state.name ,
+          score: state.highscore,
+          level: level
+        })
+        .then(() => {
+          console.log('Score added!');
+        });
+        setScore(0)
     }
   }
 
@@ -296,7 +322,7 @@ const GameScreen = ({ route, navigation }: Props) => {
           </View>
         </View>
       </Modal>
-      <Modal transparent={true} statusBarTranslucent visible={modal}>
+      <Modal transparent={true} statusBarTranslucent visible={modal && score>m}>
         <View style={{ justifyContent: 'center', flex: 1, alignItems: 'center', backgroundColor: '#000000aa' }}>
           <View style={{ position: 'absolute', width: width * 0.5, height: height * 0.4, overflow: 'hidden', alignItems: 'center', justifyContent: 'center', borderBottomWidth: height * 0 }}>
             <View style={{ width: width * 0.40, height: height * 0.8, backgroundColor: 'green', transform: [{ rotate: '37.5deg' }], position: 'absolute' }} />
